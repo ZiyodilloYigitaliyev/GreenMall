@@ -9,7 +9,7 @@ class Product(models.Model):
     description_ru = models.TextField()
     description_uz = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    price = models.BooleanField()
+    price = models.BinaryField()
 
     def __str__(self):
         return self.title_uz
