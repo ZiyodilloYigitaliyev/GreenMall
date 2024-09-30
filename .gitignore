@@ -1,0 +1,21 @@
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+*.iml
+# Django
+*.log
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*.pot
+*.pyc
+*.DS_Store
+# Virtual Environment
+.venv/
+ENV/
+.env/
+env.bak/
+venv.bak/
