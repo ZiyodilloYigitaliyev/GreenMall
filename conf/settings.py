@@ -91,9 +91,9 @@ SIMPLE_JWT = {
 }
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://green-mall.vercel.app/",
+    "green-mall.vercel.app/",
     "http://localhost:8080",
-    'https://greenmall-app-gsqii.ondigitalocean.app/',
+    'greenmall-app-gsqii.ondigitalocean.app/',
 
 ]
 AUTHENTICATION_BACKENDS = [
