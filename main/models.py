@@ -13,3 +13,16 @@ class Stats(models.Model):
             raise ValidationError("Faqat bitta statistika ma'lumotini saqlash mumkin.")
     def __str__(self):
         return f"{self.years_in_market} years in market, {self.satisfied_clients} satisfied clients"
+
+
+class Order(models.Model):
+    first_name = models.CharField(max_length=50)  # Ism
+    last_name = models.CharField(max_length=50)   # Familya
+    phone_number = models.CharField(max_length=15)  # Telefon raqami
+    product_length = models.DecimalField(max_digits=5, decimal_places=2)  # Mahsulot bo'yi
+    product_width = models.DecimalField(max_digits=5, decimal_places=2)   # Mahsulot eni
+    product_area = models.DecimalField(max_digits=8, decimal_places=2)    # Mahsulot yuzasi
+    description = models.TextField(blank=True)  # Qo'shimcha ma'lumotlar
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.phone_number}"

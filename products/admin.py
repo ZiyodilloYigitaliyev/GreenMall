@@ -13,12 +13,15 @@ class ProductAdmin(admin.ModelAdmin):
 
     def short_description(self, obj):
         # Descriptionni 100 so'zga qisqartirish
-        return ' '.join(obj.description_uz.split()[:100]) + '...' if len(obj.description_uz.split()) > 100 else obj.description_uz
+        words = obj.description_uz.split()
+        return ' '.join(words[:100]) + ('...' if len(words) > 100 else '')
 
-    short_description.short_description = 'Description'  # Admin panelda ko'rinadigan nom
+    short_description.short_description = 'Description'
 
 
 @admin.register(ProductMedia)
 class ProductMediaAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'file')
+
+
 
