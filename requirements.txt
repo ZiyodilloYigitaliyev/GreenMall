@@ -17,7 +17,7 @@ six
 sqlparse
 tzdata
 urllib3
-
+whitenoise
 
 
 
