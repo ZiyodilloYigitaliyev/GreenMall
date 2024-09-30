@@ -8,6 +8,11 @@ class StatsListView(generics.ListAPIView):
     queryset = Stats.objects.all()
     serializer_class = StatsSerializer
 
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]  # GET so'rovlari uchun ruxsat berish
+        return [IsAuthenticated()]
+
 
 # Custom permission class
 class AllowAnyGetAuthenticatedOther(IsAuthenticated):
@@ -21,7 +26,7 @@ class OrderListCreateView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    # GET uchun ruxsat, POST uchun token talab qilinadi
+
     def get_permissions(self):
         if self.request.method == 'POST':
             self.permission_classes = [AllowAny]
