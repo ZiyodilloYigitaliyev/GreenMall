@@ -6,9 +6,9 @@ class Project(models.Model):
     title_ru = models.CharField(max_length=255)
     title_uz = models.CharField(max_length=255)
 
-    description_en = models.TextField()
-    description_ru = models.TextField()
-    description_uz = models.TextField()
+    description_en = models.TextField(blank=True)
+    description_ru = models.TextField(blank=True)
+    description_uz = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.title_uz
