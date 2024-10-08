@@ -9,5 +9,5 @@ AWS_ENDPOINT = "fra1.digitaloceanspaces.com"
 AWS_S3_OBJECT_PARAMETERS = {
     "CacheControl": "max-age=86400",
 }
-DEFAULT_FILE_STORAGE = "core.cdn.backends.MediaRootS3Boto3Storages"
-STATICFILES_STORAGE = "core.cdn.backends.StaticRootS3Boto3Storages"
+DEFAULT_FILE_STORAGE = "conf.cdn.backends.MediaRootS3Boto3Storages"
+STATICFILES_STORAGE = "conf.cdn.backends.StaticRootS3Boto3Storages"
