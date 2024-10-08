@@ -18,6 +18,8 @@ sqlparse
 tzdata
 urllib3
 whitenoise
+django-storages
+boto3
 
 
 

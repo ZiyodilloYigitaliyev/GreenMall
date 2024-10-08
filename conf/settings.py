@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders',
+    'storages',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -122,15 +123,15 @@ TEMPLATES = [
     },
 ]
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
-AWS_ENDPOINT_URL = "https://greenwall.fra1.digitaloceanspaces.com"
-AWS_ENDPOINT = "greenwall.fra1.digitaloceanspaces.com"
-AWS_S3_OBJECT_PARAMETERS = {
-    "CacheControl": "max-age=86400",
-}
+# AWS S3 konfiguratsiyasi
+AWS_ACCESS_KEY_ID = '879381260948'
+AWS_SECRET_ACCESS_KEY = 'AKIA4ZPZVFKKGZUBZ5F2'
+AWS_STORAGE_BUCKET_NAME = 'bucketmyway'
+AWS_S3_REGION_NAME = 'eu-north-1'  # Masalan, 'us-west-2'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Media fayllarni S3 da saqlash
+DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Boto3Storage'
 
 
 
@@ -189,13 +190,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 import os
-
+# Statik fayllar
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Media fayllar
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
