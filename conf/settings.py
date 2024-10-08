@@ -1,4 +1,4 @@
-from .cdn.conf import DEFAULT_FILE_STORAGE, STATICFILES_STORAGE
+
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -114,13 +114,33 @@ TEMPLATES = [
 ]
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_STORAGE = STATICFILES_STORAGE
-DEFAULT_FILE_STORAGE = DEFAULT_FILE_STORAGE
+# Media fayllar DigitalOcean Spaces ga yuklanadi
+AWS_ACCESS_KEY_ID = 'DO00TUCQWZJWT9KTPNBP'
+AWS_SECRET_ACCESS_KEY = 'zrqmOAy/1pGjf5r8/OPnD23niW+PEJzjgNy89bBXlpo'
+AWS_STORAGE_BUCKET_NAME = 'greenwall'  # Bu sizning space nomingiz
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 3000
-FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 3000
+# DigitalOcean Spaces regionini kiriting, masalan Frankfurt 'fra1'
+AWS_S3_REGION_NAME = 'fra1'
+AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'  # DO Spaces uchun endpoint
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
+
+# Media fayllarni saqlash uchun sozlash
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Fayl URL larini yaratish
+AWS_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+MEDIA_ROOT = MEDIA_URL
+
+# Agar kerak bo'lsa, fayl caching opsiyalarini ham qo'shishingiz mumkin
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',  # Bir kunlik kechlash (caching) muddati
+}
 
 
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -177,12 +197,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 # Statik fayllar
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = "/static/"
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
 # STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
