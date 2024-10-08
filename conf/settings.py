@@ -125,7 +125,7 @@ TEMPLATES = [
 
 # AWS S3 konfiguratsiyasi
 AWS_ACCESS_KEY_ID = 'AKIA4ZPZVFKKGZUBZ5F2'
-AWS_SECRET_ACCESS_KEY = 'greenwall-4ut6msxa6mjzxrf7njuorw4ftxyygeun1a-s3alias'
+AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'bucketmyway'
 AWS_S3_REGION_NAME = 'eu-north-1'  # Masalan, 'us-west-2'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
