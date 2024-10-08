@@ -23,6 +23,7 @@ class Order(models.Model):
     product_width = models.DecimalField(max_digits=5, decimal_places=2)   # Mahsulot eni
     product_area = models.DecimalField(max_digits=8, decimal_places=2)    # Mahsulot yuzasi
     description = models.TextField(blank=True)  # Qo'shimcha ma'lumotlar
+    is_verified = models.BooleanField(default=False)  # Buyurtma tekshirilganmi yoki yo'qmi
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.phone_number}"
