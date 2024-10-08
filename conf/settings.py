@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -121,7 +120,7 @@ AWS_STORAGE_BUCKET_NAME = 'greenwall'  # Bu sizning space nomingiz
 
 # DigitalOcean Spaces regionini kiriting, masalan Frankfurt 'fra1'
 AWS_S3_REGION_NAME = 'fra1'
-AWS_S3_ENDPOINT_URL = 'greenwall.fra1.digitaloceanspaces.com'  # DO Spaces uchun endpoint
+AWS_S3_ENDPOINT_URL = 'https://greenwall.fra1.digitaloceanspaces.com/'  # DO Spaces uchun endpoint
 
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
 
@@ -131,7 +130,6 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # Fayl URL larini yaratish
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Agar kerak bo'lsa, fayl caching opsiyalarini ham qo'shishingiz mumkin
 AWS_S3_OBJECT_PARAMETERS = {
