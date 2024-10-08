@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 urlpatterns = [
         path('admin/', admin.site.urls),
         path('api/projects/', ProjectListCreateView.as_view(), name='project-list-create'),
