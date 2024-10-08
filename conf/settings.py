@@ -121,7 +121,7 @@ AWS_STORAGE_BUCKET_NAME = 'greenwall'  # Bu sizning space nomingiz
 
 # DigitalOcean Spaces regionini kiriting, masalan Frankfurt 'fra1'
 AWS_S3_REGION_NAME = 'fra1'
-AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'  # DO Spaces uchun endpoint
+AWS_S3_ENDPOINT_URL = 'fra1.digitaloceanspaces.com'  # DO Spaces uchun endpoint
 
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
 
@@ -139,7 +139,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
