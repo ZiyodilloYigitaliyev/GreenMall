@@ -21,7 +21,7 @@ whitenoise
 django-storages
 boto3
 django-storages
-
+s3cmd
 
 
 
