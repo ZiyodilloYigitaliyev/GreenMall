@@ -120,7 +120,7 @@ AWS_STORAGE_BUCKET_NAME = 'greenwall'  # Bu sizning space nomingiz
 
 # DigitalOcean Spaces regionini kiriting, masalan Frankfurt 'fra1'
 AWS_S3_REGION_NAME = 'fra1'
-AWS_S3_ENDPOINT_URL = 'https://greenwall.fra1.digitaloceanspaces.com/'  # DO Spaces uchun endpoint
+AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com/'  # DO Spaces uchun endpoint
 
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
 
@@ -128,14 +128,14 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitalo
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Fayl URL larini yaratish
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-# Agar kerak bo'lsa, fayl caching opsiyalarini ham qo'shishingiz mumkin
+# Fayllarni ommaga ochiq qilib yuklash
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',  # Bir kunlik kechlash (caching) muddati
-    'ACL': 'public-read',
+    'ACL': 'public-read',  # Fayllarni ommaga ochiq qilish
 }
+
 
 
 STATIC_URL = '/static/'
