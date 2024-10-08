@@ -1,14 +1,4 @@
-from .cdn.conf import(
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-    AWS_ENDPOINT,
-    AWS_STORAGE_BUCKET_NAME,
-    AWS_ENDPOINT_URL,
-    AWS_S3_OBJECT_PARAMETERS,
-    DEFAULT_FILE_STORAGE,
-    STATICFILES_STORAGE,
-)
-
+from .cdn.conf import DEFAULT_FILE_STORAGE, STATICFILES_STORAGE
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -77,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
@@ -122,23 +112,14 @@ TEMPLATES = [
         },
     },
 ]
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_STORAGE = STATICFILES_STORAGE
+DEFAULT_FILE_STORAGE = DEFAULT_FILE_STORAGE
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 3000
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 3000
 
-AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
-AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
-AWS_S3_ENDPOINT_URL = AWS_ENDPOINT_URL
-AWS_S3_OBJECT_PARAMETERS = AWS_S3_OBJECT_PARAMETERS
-AWS_LOCATION = AWS_STORAGE_BUCKET_NAME
-AWS_QUERYSTRING_EXPIRE = 5
-
-STATIC_URL = 'https://%s/%s/' % (AWS_ENDPOINT, AWS_LOCATION)
-MEDIA_URL = 'https://%s/%s/' % (AWS_ENDPOINT, AWS_LOCATION)
-
-AWS_ENABLED = True
-AWS_S3_SECURE_URLS = True
 
 
 # Database
@@ -195,14 +176,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-import os
 # Statik fayllar
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
 
-# Media fayllar
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 # STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
