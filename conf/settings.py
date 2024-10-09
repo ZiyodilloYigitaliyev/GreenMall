@@ -110,20 +110,28 @@ STORAGES = {
             "endpoint_url": "https://greenmall.fra1.digitaloceanspaces.com",
             "default_acl": "public-read",
             "location": "media",
-            # required for the correct storage.exists() functioning
             "file_overwrite": False,
-            # don't append any authentication parameters to the files.
             "querystring_auth": False,
         },
     },
     "staticfiles": {
-        # For static files, use file-system storage
-        # "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        # Or Whitenoise storage
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": "greenmall",
+            "access_key": "DO00DM4GAEDJVAZ39CCB",
+            "secret_key": "b5PBX+Kb034FkmNp4HrMl7OtZNT7gIHPZ6rGZMA8myM",
+            "region_name": "fra1",
+            "endpoint_url": "https://greenmall.fra1.digitaloceanspaces.com",
+            "default_acl": "public-read",
+            "location": "static",
+            "file_overwrite": True,
+            "querystring_auth": False,
+        },
     },
 }
+STATIC_URL = "https://greenmall.fra1.digitaloceanspaces.com/greenmall/static/"
 MEDIA_URL = "https://greenmall.fra1.digitaloceanspaces.com/greenmall/media/"
+
 
 DATABASES = {
     'default': {
