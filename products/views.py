@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import *
 
 
 class ProductListCreateView(APIView):
@@ -21,8 +21,13 @@ class ProductListCreateView(APIView):
     def post(self, request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            product = serializer.save()  # Save the product and get the instance
+            media_files = request.FILES.getlist('media')  # Retrieve media files
+            for file in media_files:
+                ProductMedia.objects.create(product=product, file=file)  # Create ProductMedia instances
+            # Return updated serializer data
+            updated_serializer = ProductSerializer(product)  # If you want to return updated data
+            return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
