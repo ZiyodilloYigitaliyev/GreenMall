@@ -99,22 +99,31 @@ TEMPLATES = [
 ]
 
 # AWS S3 (DigitalOcean Spaces) konfiguratsiyasi
-AWS_ACCESS_KEY_ID = 'DO00DM4GAEDJVAZ39CCB'
-AWS_SECRET_ACCESS_KEY = 'b5PBX+Kb034FkmNp4HrMl7OtZNT7gIHPZ6rGZMA8myM'
-AWS_STORAGE_BUCKET_NAME = 'greenmall'
-AWS_S3_REGION_NAME = 'fra1'
-AWS_S3_ENDPOINT_URL = 'https://greenmall.fra1.digitaloceanspaces.com'
-
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-    'ACL': 'public-read',
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": "greenmall",
+            "access_key": "DO00DM4GAEDJVAZ39CCB",
+            "secret_key": "b5PBX+Kb034FkmNp4HrMl7OtZNT7gIHPZ6rGZMA8myM",
+            "region_name": "fra1",
+            "endpoint_url": "https://greenmall.fra1.digitaloceanspaces.com",
+            "default_acl": "public-read",
+            "location": "media",
+            # required for the correct storage.exists() functioning
+            "file_overwrite": False,
+            # don't append any authentication parameters to the files.
+            "querystring_auth": False,
+        },
+    },
+    "staticfiles": {
+        # For static files, use file-system storage
+        # "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        # Or Whitenoise storage
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
 }
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = "https://greenmall.fra1.digitaloceanspaces.com/greenmall/media/"
 
 DATABASES = {
     'default': {
