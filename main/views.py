@@ -20,11 +20,9 @@ class StatsListView(generics.ListAPIView):
 
 class OrderDetailView(APIView):
     def get_permissions(self):
-        if self.request.method in ['GET']:
-            self.permission_classes = [AllowAny]
-        else:
-            self.permission_classes = [IsAuthenticated]
-        return super().get_permissions()
+        if self.request.method == 'GET':
+            return [AllowAny()]  # No authentication required for GET requests
+        return [IsAuthenticated()]  # Authentication required for POST, PUT, DELETE requests
 
     def get(self, request):
         orders = Order.objects.all()
