@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
@@ -17,32 +18,11 @@ class StatsListView(generics.ListAPIView):
         return [IsAuthenticated()]
 
 
-# Custom permission class
-class AllowAnyGetAuthenticatedOther(IsAuthenticated):
-    def has_permission(self, request, view):
-        if request.method == 'POST':
-            return True
-        return super().has_permission(request, view)
-
-
-class OrderListCreateView(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            self.permission_classes = [AllowAny]
-        else:
-            self.permission_classes = [IsAuthenticated]
-        return super().get_permissions()
-
-
 class OrderDetailView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
-        if self.request.method == 'GET':
+        if self.request.method in ['GET']:
             self.permission_classes = [AllowAny]
         else:
             self.permission_classes = [IsAuthenticated]
@@ -57,6 +37,23 @@ class OrderDetailView(APIView):
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
+        return self.update_order(request, pk)
+
+    def patch(self, request, pk):
+        try:
+            order = Order.objects.get(pk=pk)
+            order.is_verified = not order.is_verified
+            order.save()
+            return Response({"message": "Order status updated"}, status=status.HTTP_200_OK)
+        except Order.DoesNotExist:
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def update_order(self, request, pk):
         try:
             order = Order.objects.get(pk=pk)
             serializer = OrderSerializer(order, data=request.data, partial=True)
@@ -67,19 +64,3 @@ class OrderDetailView(APIView):
         except Order.DoesNotExist:
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def patch(self, request, pk):
-        try:
-            order = Order.objects.get(pk=pk)
-            order.is_verified = not order.is_verified  # Qiymatni o'zgartirish
-            order.save()
-            return Response({"message": "Order status updated"}, status=status.HTTP_200_OK)
-        except Order.DoesNotExist:
-            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    def delete(self, request, pk):
-        try:
-            order = Order.objects.get(pk=pk)
-            order.delete()
-            return Response({"message": "Order deleted"}, status=status.HTTP_204_NO_CONTENT)
-        except Order.DoesNotExist:
-            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
