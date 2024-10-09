@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -43,10 +44,6 @@ class ProductListCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        try:
-            product = Product.objects.get(pk=pk)
-        except Product.DoesNotExist:
-            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        product.delete()
-        return Response({'message': 'Product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        project = get_object_or_404(Product, pk=pk)
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
