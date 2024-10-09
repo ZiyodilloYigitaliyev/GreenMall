@@ -19,8 +19,6 @@ class StatsListView(generics.ListAPIView):
 
 
 class OrderDetailView(APIView):
-    authentication_classes = [TokenAuthentication]
-
     def get_permissions(self):
         if self.request.method in ['GET']:
             self.permission_classes = [AllowAny]
