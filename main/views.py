@@ -28,13 +28,10 @@ class OrderDetailView(APIView):
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
 
-    def get(self, request, pk):
-        try:
-            order = Order.objects.get(pk=pk)
-            serializer = OrderSerializer(order)
-            return Response(serializer.data)
-        except Order.DoesNotExist:
-            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+    def get(self, request):
+        orders = Order.objects.all()
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
 
     def put(self, request, pk):
         return self.update_order(request, pk)
