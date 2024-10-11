@@ -21,13 +21,20 @@ class StatsListView(generics.ListAPIView):
 class OrderDetailView(APIView):
     def get_permissions(self):
         if self.request.method == 'POST':
-            return [AllowAny()]  # No authentication required for GET requests
-        return [IsAuthenticated()]  # Authentication required for POST, PUT, DELETE requests
+            return [AllowAny()]  # No authentication required for POST requests
+        return [IsAuthenticated()]  # Authentication required for other requests (GET, PUT, DELETE, PATCH)
 
     def get(self, request):
         orders = Order.objects.all()
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         return self.update_order(request, pk)
@@ -56,4 +63,3 @@ class OrderDetailView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Order.DoesNotExist:
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
-
