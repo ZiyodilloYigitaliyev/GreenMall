@@ -20,7 +20,7 @@ class StatsListView(generics.ListAPIView):
 
 class OrderDetailView(APIView):
     def get_permissions(self):
-        if self.request.method == 'GET':
+        if self.request.method == 'POST':
             return [AllowAny()]  # No authentication required for GET requests
         return [IsAuthenticated()]  # Authentication required for POST, PUT, DELETE requests
 
