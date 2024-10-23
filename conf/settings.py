@@ -136,11 +136,11 @@ MEDIA_URL = "https://greenmall2024.fra1.digitaloceanspaces.com/greenmall/media/"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('database'),
-        'USER': os.getenv('username'),
-        'PASSWORD': os.getenv('password'),
-        'HOST': os.getenv('host'),
-        'PORT': os.getenv('port'),
+        'NAME': os.getenv('Database'),
+        'USER': os.getenv('Username'),
+        'PASSWORD': os.getenv('Password'),
+        'HOST': os.getenv('Host'),
+        'PORT': os.getenv('Port'),
     }
 }
 
