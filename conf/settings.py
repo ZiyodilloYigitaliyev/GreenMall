@@ -72,6 +72,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://green-mall.vercel.app",
     "http://localhost:8080",
+    "https://greenwall2024-832ac2e5bda7.herokuapp.com"
     
 ]
 
