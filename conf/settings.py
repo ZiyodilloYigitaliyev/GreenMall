@@ -72,7 +72,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://green-mall.vercel.app",
     "http://localhost:8080",
-    'https://greenmall-app-gsqii.ondigitalocean.app',
+    
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -103,11 +103,11 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "greenmall",
-            "access_key": "DO00DM4GAEDJVAZ39CCB",
-            "secret_key": "b5PBX+Kb034FkmNp4HrMl7OtZNT7gIHPZ6rGZMA8myM",
+            "bucket_name": "greenmall2024",
+            "access_key": "DO00BVLNKA7647FFVUZE",
+            "secret_key": "iDDI0dnbf7IjqCP0lCC9VMp3dq4MO3jQr6Mz1JaXQxU",
             "region_name": "fra1",
-            "endpoint_url": "https://greenmall.fra1.digitaloceanspaces.com",
+            "endpoint_url": "https://greenmall2024.fra1.digitaloceanspaces.com",
             "default_acl": "public-read",
             "location": "media",
             "file_overwrite": False,
@@ -117,11 +117,11 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "greenmall",
-            "access_key": "DO00DM4GAEDJVAZ39CCB",
-            "secret_key": "b5PBX+Kb034FkmNp4HrMl7OtZNT7gIHPZ6rGZMA8myM",
+            "bucket_name": "greenmall2024",
+            "access_key": "DO00BVLNKA7647FFVUZE",
+            "secret_key": "iDDI0dnbf7IjqCP0lCC9VMp3dq4MO3jQr6Mz1JaXQxU",
             "region_name": "fra1",
-            "endpoint_url": "https://greenmall.fra1.digitaloceanspaces.com",
+            "endpoint_url": "https://greenmall2024.fra1.digitaloceanspaces.com",
             "default_acl": "public-read",
             "location": "static",
             "file_overwrite": True,
@@ -129,8 +129,8 @@ STORAGES = {
         },
     },
 }
-STATIC_URL = "https://greenmall.fra1.digitaloceanspaces.com/greenmall/static/"
-MEDIA_URL = "https://greenmall.fra1.digitaloceanspaces.com/greenmall/media/"
+STATIC_URL = "https://greenmall2024.fra1.digitaloceanspaces.com/greenmall/static/"
+MEDIA_URL = "https://greenmall2024.fra1.digitaloceanspaces.com/greenmall/media/"
 
 
 DATABASES = {
