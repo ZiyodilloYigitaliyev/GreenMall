@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-        path('admin/', admin.site.urls),
+        path('greenwall/login/admin/', admin.site.urls),
         path('api/projects/', ProjectListCreateView.as_view(), name='project-list-create'),
         path('api/projects/<int:pk>/', ProjectListCreateView.as_view(), name='project-detail' ),
         path('api/stats/', StatsListView.as_view(), name='stats-list'),
