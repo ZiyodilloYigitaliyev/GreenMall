@@ -22,6 +22,7 @@ boto3
 whitenoise
 django-storages
 s3cmd
-
+cloudinary 
+django-cloudinary-storage
 
 
