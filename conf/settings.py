@@ -104,25 +104,25 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "greenmall2024",
-            "access_key": "DO00BVLNKA7647FFVUZE",
-            "secret_key": "iDDI0dnbf7IjqCP0lCC9VMp3dq4MO3jQr6Mz1JaXQxU",
-            "region_name": "fra1",
-            "endpoint_url": "https://greenmall2024.fra1.digitaloceanspaces.com",
+            "bucket_name": "bucketeer-e02dbf76-d16c-41d4-9abf-db56579b3243",
+            "access_key": os.environ.get('access_key'),
+            "secret_key":  os.environ.get('secret_key'),
+            "region_name": "eu-west-1",
+            "endpoint_url":  os.environ.get('endpoint_url'),
             "default_acl": "public-read",
             "location": "media",
-            "file_overwrite": False,
+            "file_overwrite": True,
             "querystring_auth": False,
         },
     },
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "greenmall2024",
-            "access_key": "DO00BVLNKA7647FFVUZE",
-            "secret_key": "iDDI0dnbf7IjqCP0lCC9VMp3dq4MO3jQr6Mz1JaXQxU",
-            "region_name": "fra1",
-            "endpoint_url": "https://greenmall2024.fra1.digitaloceanspaces.com",
+            "bucket_name": "bucketeer-e02dbf76-d16c-41d4-9abf-db56579b3243",
+            "access_key": os.environ.get('access_key'),
+            "secret_key": os.environ.get('secret_key'),
+            "region_name": "eu-west-1",
+            "endpoint_url": os.environ.get('endpoint_url'),
             "default_acl": "public-read",
             "location": "static",
             "file_overwrite": True,
@@ -130,8 +130,8 @@ STORAGES = {
         },
     },
 }
-STATIC_URL = "https://greenmall2024.fra1.digitaloceanspaces.com/greenmall/static/"
-MEDIA_URL = "https://greenmall2024.fra1.digitaloceanspaces.com/greenmall/media/"
+STATIC_URL = os.environ.get('STATIC_URL')
+MEDIA_URL =  os.environ.get('MEDIA_URL')
 
 
 DATABASES = {
