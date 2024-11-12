@@ -2,7 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
@@ -99,28 +99,18 @@ TEMPLATES = [
     },
 ]
 
-# AWS S3 konfiguratsiyasi
-AWS_DEFAULT_ACL = 'public-read'
-AWS_ACCESS_KEY_ID = os.environ.get('CLOUDCUBE_ACCESS_KEY_ID')  # AWS ACCESS KEY
-AWS_SECRET_ACCESS_KEY = os.environ.get('CLOUDCUBE_SECRET_ACCESS_KEY')  # AWS SECRET KEY
-AWS_STORAGE_BUCKET_NAME = os.environ.get('CLOUDCUBE_BUCKET_NAME')  # Bucketeer bucket nomi
-AWS_S3_REGION_NAME =  os.environ.get('AWS_S3_REGION_NAME')  # S3 hududi
-AWS_S3_ENDPOINT_URL = os.environ.get('CLOUDCUBE_URL')  # S3 endpoint URL
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
+# Cloudinary sozlamalari
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-# Statik fayllar uchun
-STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# Media fayllarni Cloudinary'da saqlash
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Media fayllar uchun
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+# URL uchun konfiguratsiya
+MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': {
