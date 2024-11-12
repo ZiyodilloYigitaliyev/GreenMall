@@ -105,11 +105,11 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": os.environ.get('BUCKETEER_BUCKET_NAME'),
-            "access_key": os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
-            "secret_key":  os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
-            "region_name": os.environ.get('BUCKETEER_AWS_REGION'),
-            "endpoint_url":  os.environ.get('endpoint_url'),
+            "bucket_name": os.environ.get("BUCKETEER_BUCKET_NAME"),
+            "access_key": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
+            "secret_key":  os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
+            "region_name": os.environ.get("BUCKETEER_AWS_REGION"),
+            "endpoint_url":  os.environ.get("endpoint_url"),
             "location": "media",
             "file_overwrite": True,
             "querystring_auth": False,
@@ -118,19 +118,19 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": os.environ.get('BUCKETEER_BUCKET_NAME'),
-            "access_key": os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
-            "secret_key": os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
-            "region_name": os.environ.get('BUCKETEER_AWS_REGION'),
-            "endpoint_url": os.environ.get('endpoint_url'),
+            "bucket_name": os.environ.get("BUCKETEER_BUCKET_NAME"),
+            "access_key": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
+            "secret_key": os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
+            "region_name": os.environ.get("BUCKETEER_AWS_REGION"),
+            "endpoint_url": os.environ.get("endpoint_url"),
             "location": "static",
             "file_overwrite": True,
             "querystring_auth": False,
         },
     },
 }
-STATIC_URL = os.environ.get('STATIC_URL')
-MEDIA_URL =  os.environ.get('MEDIA_URL')
+STATIC_URL = os.environ.get("STATIC_URL")
+MEDIA_URL =  os.environ.get("MEDIA_URL")
 
 
 DATABASES = {
