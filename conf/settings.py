@@ -101,11 +101,11 @@ TEMPLATES = [
 
 # AWS S3 konfiguratsiyasi
 AWS_DEFAULT_ACL = 'public-read'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')  # AWS ACCESS KEY
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')  # AWS SECRET KEY
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')  # Bucketeer bucket nomi
+AWS_ACCESS_KEY_ID = os.environ.get('CLOUDCUBE_ACCESS_KEY_ID')  # AWS ACCESS KEY
+AWS_SECRET_ACCESS_KEY = os.environ.get('CLOUDCUBE_SECRET_ACCESS_KEY')  # AWS SECRET KEY
+AWS_STORAGE_BUCKET_NAME = os.environ.get('CLOUDCUBE_BUCKET_NAME')  # Bucketeer bucket nomi
 AWS_S3_REGION_NAME =  os.environ.get('AWS_S3_REGION_NAME')  # S3 hududi
-AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  # S3 endpoint URL
+AWS_S3_ENDPOINT_URL = os.environ.get('CLOUDCUBE_URL')  # S3 endpoint URL
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
