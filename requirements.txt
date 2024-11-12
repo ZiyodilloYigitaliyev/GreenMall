@@ -1,6 +1,5 @@
 pytz
 chardet
-celery
 Django
 django-cors-headers
 djangorestframework
@@ -20,6 +19,7 @@ urllib3
 whitenoise
 django-storages
 boto3
+whitenoise
 django-storages
 s3cmd
 
