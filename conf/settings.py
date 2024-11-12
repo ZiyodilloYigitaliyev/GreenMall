@@ -99,7 +99,8 @@ TEMPLATES = [
     },
 ]
 
-# AWS S3 (DigitalOcean Spaces) konfiguratsiyasi
+# AWS S3 konfiguratsiyasi
+AWS_DEFAULT_ACL = None
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
