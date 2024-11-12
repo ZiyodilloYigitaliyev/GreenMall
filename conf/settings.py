@@ -100,7 +100,7 @@ TEMPLATES = [
 ]
 
 # AWS S3 konfiguratsiyasi
-AWS_DEFAULT_ACL = None  # ACLni `None` qilib o'zgartirish, bu holda fayllar bucketda ACL'lar bilan saqlanmaydi
+AWS_DEFAULT_ACL = 'public-read'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')  # AWS ACCESS KEY
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')  # AWS SECRET KEY
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')  # Bucketeer bucket nomi
@@ -118,6 +118,8 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 DATABASES = {
