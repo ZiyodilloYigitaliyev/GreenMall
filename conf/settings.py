@@ -105,10 +105,10 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "bucketeer-e02dbf76-d16c-41d4-9abf-db56579b3243",
-            "access_key": os.environ.get('access_key'),
-            "secret_key":  os.environ.get('secret_key'),
-            "region_name": "eu-west-1",
+            "bucket_name": os.environ.get('BUCKETEER_BUCKET_NAME'),
+            "access_key": os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
+            "secret_key":  os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
+            "region_name": os.environ.get('BUCKETEER_AWS_REGION'),
             "endpoint_url":  os.environ.get('endpoint_url'),
             "default_acl": "public-read",
             "location": "media",
@@ -119,10 +119,10 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "bucket_name": "bucketeer-e02dbf76-d16c-41d4-9abf-db56579b3243",
-            "access_key": os.environ.get('access_key'),
-            "secret_key": os.environ.get('secret_key'),
-            "region_name": "eu-west-1",
+            "bucket_name": os.environ.get('BUCKETEER_BUCKET_NAME'),
+            "access_key": os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID'),
+            "secret_key": os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY'),
+            "region_name": os.environ.get('BUCKETEER_AWS_REGION'),
             "endpoint_url": os.environ.get('endpoint_url'),
             "default_acl": "public-read",
             "location": "static",
