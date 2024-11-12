@@ -100,37 +100,24 @@ TEMPLATES = [
 ]
 
 # AWS S3 konfiguratsiyasi
-AWS_DEFAULT_ACL = None
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "bucket_name": os.environ.get("BUCKETEER_BUCKET_NAME"),
-            "access_key": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
-            "secret_key":  os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
-            "region_name": os.environ.get("BUCKETEER_AWS_REGION"),
-            "endpoint_url":  os.environ.get("endpoint_url"),
-            "location": "media",
-            "file_overwrite": True,
-            "querystring_auth": False,
-        },
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "bucket_name": os.environ.get("BUCKETEER_BUCKET_NAME"),
-            "access_key": os.environ.get("BUCKETEER_AWS_ACCESS_KEY_ID"),
-            "secret_key": os.environ.get("BUCKETEER_AWS_SECRET_ACCESS_KEY"),
-            "region_name": os.environ.get("BUCKETEER_AWS_REGION"),
-            "endpoint_url": os.environ.get("endpoint_url"),
-            "location": "static",
-            "file_overwrite": True,
-            "querystring_auth": False,
-        },
-    },
+AWS_DEFAULT_ACL = None  # ACLni `None` qilib o'zgartirish, bu holda fayllar bucketda ACL'lar bilan saqlanmaydi
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')  # AWS ACCESS KEY
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')  # AWS SECRET KEY
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')  # Bucketeer bucket nomi
+AWS_S3_REGION_NAME =  os.environ.get('AWS_S3_REGION_NAME')  # S3 hududi
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  # S3 endpoint URL
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
 }
-STATIC_URL = os.environ.get("STATIC_URL")
-MEDIA_URL =  os.environ.get("MEDIA_URL")
+
+# Statik fayllar uchun
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Media fayllar uchun
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 
 DATABASES = {
