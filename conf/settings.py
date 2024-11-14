@@ -2,7 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
+from urllib.parse import urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
@@ -72,8 +72,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://green-mall.vercel.app",
-    "http://localhost:8080",
-    "https://greenwall2024-832ac2e5bda7.herokuapp.com"
     
 ]
 
@@ -102,30 +100,19 @@ TEMPLATES = [
 
 
 
-# BUCKETEER uchun sozlamalar
-AWS_ACCESS_KEY_ID = os.getenv("BUCKETEER_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("BUCKETEER_AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("BUCKETEER_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv("BUCKETEER_AWS_REGION")
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 
-# Statik va media fayllar uchun sozlamalar
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+cloudcube_url = urlparse(os.environ.get('CLOUDCUBE_URL'))
+AWS_ACCESS_KEY_ID = os.environ.get('CLOUDCUBE_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('CLOUDCUBE_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = cloudcube_url.netloc
+AWS_S3_REGION_NAME = 'us-east-1' 
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-# S3 bucketning fayllari uchun public ruxsatni sozlash
-AWS_QUERYSTRING_AUTH = False
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_LOCATION = cloudcube_url.path[1:]  # Cube nomini olish uchun
 AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-    'ACL': 'public-read',
-}
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+AWS_QUERYSTRING_AUTH = False
+
 
 
 DATABASES = {
