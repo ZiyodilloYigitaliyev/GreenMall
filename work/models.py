@@ -16,7 +16,7 @@ class Project(models.Model):
 
 class ProjectMedia(models.Model):
     project = models.ForeignKey(Project, related_name='media', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='project_media/')
+    file_url = models.URLField()
 
     def __str__(self):
         return f"Media for {self.project.title_uz} - {self.file.name}"

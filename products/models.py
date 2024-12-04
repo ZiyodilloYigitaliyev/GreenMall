@@ -17,7 +17,8 @@ class Product(models.Model):
 
 class ProductMedia(models.Model):
     product = models.ForeignKey(Product, related_name='media', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='product_media/')
+    file_url = models.URLField()  # Fayl URL'sini saqlash uchun
 
     def __str__(self):
-        return f"Media for {self.product.title_uz} - {self.file.name}"
+        return f"Media for {self.product.title_uz} - {self.file_url}"
+
