@@ -26,7 +26,7 @@ class ProjectListCreateView(APIView):
     def post(self, request):
             serializer = ProjectSerializer(data=request.data)
             if serializer.is_valid():
-                product = serializer.save()  # Save the product and get the instance
+                project = serializer.save()  # Save the product and get the instance
                 media_files = request.FILES.getlist('media')  # Retrieve media files
 
                 # S3 bucket sozlamalari
@@ -51,10 +51,10 @@ class ProjectListCreateView(APIView):
                     s3_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_path}"
 
                     # Fayl ma'lumotini saqlash
-                    ProjectMedia.objects.create(product=product, file_url=s3_url)  # 'file' maydoni 'file_url' bo'lishi kerak
+                    ProjectMedia.objects.create(project=project, file_url=s3_url)  # 'file' maydoni 'file_url' bo'lishi kerak
 
                 # Return updated serializer data
-                updated_serializer = ProjectSerializer(product)  # If you want to return updated data
+                updated_serializer = ProjectSerializer(project)  # If you want to return updated data
                 return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
