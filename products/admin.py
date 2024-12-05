@@ -21,7 +21,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductMedia)
 class ProductMediaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'file')
+    list_display = ('id', 'product', 'file_url')
 
 
 

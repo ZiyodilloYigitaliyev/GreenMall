@@ -12,4 +12,4 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectMedia)
 class ProjectMediaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'project', 'file')
+    list_display = ('id', 'project', 'file_url')
