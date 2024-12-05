@@ -4,7 +4,7 @@ from .models import *
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectMedia
-        fields = ['id', 'file']
+        fields = ['id', 'file_url']
 
 
 class ProjectSerializer(serializers.ModelSerializer):

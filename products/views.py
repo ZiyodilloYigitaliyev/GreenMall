@@ -48,7 +48,7 @@ class ProductListCreateView(APIView):
                 s3_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_path}"
 
                 # Fayl ma'lumotini saqlash
-                ProductMedia.objects.create(product=product, file=s3_url)
+                ProductMedia.objects.create(product=product, file_url=s3_url)  # 'file' maydoni 'file_url' bo'lishi kerak
 
             # Return updated serializer data
             updated_serializer = ProductSerializer(product)  # If you want to return updated data
@@ -69,6 +69,6 @@ class ProductListCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        project = get_object_or_404(Product, pk=pk)
-        project.delete()
+        product = get_object_or_404(Product, pk=pk)
+        product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
