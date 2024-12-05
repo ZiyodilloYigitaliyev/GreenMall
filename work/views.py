@@ -18,38 +18,46 @@ class ProjectListCreateView(APIView):
             return [AllowAny()]  # GET uchun autentifikatsiya talab qilinmaydi
         return [IsAuthenticated()]  # POST, PUT, DELETE uchun autentifikatsiya talab qilinadi
 
-    def upload_to_s3(self, file):
-        s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-
-        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-        file_name = f'project_media/{file.name}'
-        try:
-            s3.upload_fileobj(file, bucket_name, file_name, ExtraArgs={'ACL': 'public-read'})
-            file_url = f'https://{bucket_name}.s3.amazonaws.com/{file_name}'
-            return file_url
-        except Exception as e:
-            raise Exception(f"Error uploading file to S3: {str(e)}")
-
     def get(self, request):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ProjectSerializer(data=request.data)
-        if serializer.is_valid():
-            project = serializer.save()  # Loyihani saqlash
+            serializer = ProjectSerializer(data=request.data)
+            if serializer.is_valid():
+                product = serializer.save()  # Save the product and get the instance
+                media_files = request.FILES.getlist('media')  # Retrieve media files
 
-            # Fayllarni S3'ga yuklash
-            media_files = request.FILES.getlist('media')  # Fayllarni olish
-            for file in media_files:
-                file_url = self.upload_to_s3(file)  # S3'ga yuklash
-                ProjectMedia.objects.create(project=project, file_url=file_url)  # Fayl URL'sini saqlash
+                # S3 bucket sozlamalari
+                s3_client = boto3.client(
+                    's3',
+                    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                    region_name=settings.AWS_REGION_NAME
+                )
 
-            updated_serializer = ProjectSerializer(project)
-            return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                for file in media_files:
+                    # S3'ga fayl yuklash
+                    s3_path = f"project_media/{file.name}"  # S3 ichidagi papka va fayl nomi
+                    s3_client.upload_fileobj(
+                        file,
+                        settings.AWS_STORAGE_BUCKET_NAME,
+                        s3_path,
+                        ExtraArgs={'ContentType': file.content_type, 'ACL': 'public-read'}  # Public URL uchun
+                    )
+
+                    # S3'da yuklangan fayl URL'si
+                    s3_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_path}"
+
+                    # Fayl ma'lumotini saqlash
+                    ProjectMedia.objects.create(product=product, file_url=s3_url)  # 'file' maydoni 'file_url' bo'lishi kerak
+
+                # Return updated serializer data
+                updated_serializer = ProjectSerializer(product)  # If you want to return updated data
+                return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
