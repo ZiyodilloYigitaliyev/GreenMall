@@ -2,7 +2,7 @@ import os
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
-MEDIA_DIR = "media"
+MEDIA_DIR = os.path.join("/tmp", "media")
 
 if not os.path.exists(MEDIA_DIR):
     os.makedirs(MEDIA_DIR)
