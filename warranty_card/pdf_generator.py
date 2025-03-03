@@ -1,10 +1,15 @@
+import os
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
-import os
+
+MEDIA_DIR = "media"
+
+if not os.path.exists(MEDIA_DIR):
+    os.makedirs(MEDIA_DIR)
 
 def generate_user_pdf(user):
     filename = f"user_{user.unique_code}.pdf"
-    filepath = os.path.join("media", filename)
+    filepath = os.path.join(MEDIA_DIR, filename)
 
     c = canvas.Canvas(filepath, pagesize=A4)
     c.setFont("Helvetica", 12)
