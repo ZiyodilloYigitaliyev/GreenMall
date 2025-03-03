@@ -24,5 +24,5 @@ django-storages
 s3cmd
 cloudinary 
 django-cloudinary-storage
-
+reportlab
 
