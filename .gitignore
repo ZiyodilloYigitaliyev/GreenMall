@@ -3,6 +3,7 @@
 
 # PyCharm
 .idea/
+venv
 *.iml
 # Django
 *.log
@@ -19,3 +20,4 @@ ENV/
 .env/
 env.bak/
 venv.bak/
+.env

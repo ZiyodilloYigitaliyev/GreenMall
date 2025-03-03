@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from main.views import StatsListView
@@ -12,6 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
+        path("",include("warranty_card.urls")),
         path('greenwall/login/admin/', admin.site.urls),
         path('api/projects/', ProjectListCreateView.as_view(), name='project-list-create'),
         path('api/projects/<int:pk>/', ProjectListCreateView.as_view(), name='project-detail' ),
