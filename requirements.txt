@@ -9,6 +9,7 @@ pillow
 prompt_toolkit
 psycopg2-binary
 PyJWT
+PyPDF2
 python-dateutil
 python-dotenv
 requests

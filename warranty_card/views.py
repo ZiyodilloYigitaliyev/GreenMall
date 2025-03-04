@@ -9,6 +9,7 @@ from .serializers import UserSerializer
 from .pdf_generator import generate_user_pdf
 from django.conf import settings
 from rest_framework import status
+from django.core.files.storage import default_storage
 
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
@@ -17,14 +18,16 @@ class RegisterView(CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save()
-        generate_user_pdf(user)
+
         pdf_path = generate_user_pdf(user)
-        user.pdf_path = pdf_path
-        user.save()
+
+        if not default_storage.exists(pdf_path):
+            return Response({"error": "PDF yaratilmadi!"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(
             {
                 "message": "User created successfully",
-                "pdf_url": f"{settings.MEDIA_URL}{user.unique_code}.pdf", 
+                "pdf_url": f"{settings.MEDIA_URL}{pdf_path}",
             },
             status=status.HTTP_201_CREATED
         )
