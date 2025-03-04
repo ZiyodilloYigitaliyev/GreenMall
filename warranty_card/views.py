@@ -10,6 +10,7 @@ from .pdf_generator import generate_user_pdf
 from django.conf import settings
 from rest_framework import status
 from django.core.files.storage import default_storage
+import os
 
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
@@ -19,15 +20,19 @@ class RegisterView(CreateAPIView):
     def perform_create(self, serializer):
         user = serializer.save()
 
-        pdf_path = generate_user_pdf(user)
+        # ✅ PDF yaratish
+        pdf_filename = generate_user_pdf(user)
 
-        if not default_storage.exists(pdf_path):
+        # ✅ Fayl mavjudligini tekshiramiz
+        pdf_url = f"{settings.MEDIA_URL}{pdf_filename}"
+        full_pdf_path = os.path.join(settings.MEDIA_ROOT, pdf_filename)
+        if not default_storage.exists(full_pdf_path):
             return Response({"error": "PDF yaratilmadi!"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(
             {
                 "message": "User created successfully",
-                "pdf_url": f"{settings.MEDIA_URL}{pdf_path}",
+                "pdf_url": pdf_url,  # ✅ To‘g‘ri URL
             },
             status=status.HTTP_201_CREATED
         )
