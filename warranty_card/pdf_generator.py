@@ -3,7 +3,7 @@ from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.pagesizes import A3
+from reportlab.lib.pagesizes import A2  # ✅ A2 format kattaroq chiqadi
 from reportlab.lib.colors import white
 
 # 📂 PDF va shrift kataloglari
@@ -23,23 +23,28 @@ def generate_user_pdf(user):
     pdf_filename = "warranty_card.pdf"
     output_pdf_path = os.path.join(GENERATED_PDF_DIR, pdf_filename)
 
-    # ✅ PDF yaratamiz
-    c = canvas.Canvas(output_pdf_path, pagesize=A3)
-    page_width, page_height = A3  # Sahifa o‘lchami (A3, landshaft rejimida)
+    # ✅ PDF yaratamiz (A2 formatda)
+    c = canvas.Canvas(output_pdf_path, pagesize=A2)
+    page_width, page_height = A2  # A2 sahifa o‘lchami
 
-    # 🎮 PNG FON RASMINI JOYLASH (butun sahifa uchun)
+    # 🎮 RASMNI CHIROYLI JOYLASHTIRISH
+    IMAGE_WIDTH = 1200  # ✅ Rasm kengligi
+    IMAGE_HEIGHT = 800  # ✅ Rasm balandligi
+    X_POSITION = (page_width - IMAGE_WIDTH) / 2  # Markazlash
+    Y_POSITION = (page_height - IMAGE_HEIGHT) / 2
+
     if os.path.exists(IMAGE_PATH):
-        c.drawImage(IMAGE_PATH, 0, 0, width=page_width, height=page_height, mask='auto')
+        c.drawImage(IMAGE_PATH, X_POSITION, Y_POSITION, width=IMAGE_WIDTH, height=IMAGE_HEIGHT, mask='auto')
 
     # 📈 Foydalanuvchi ma'lumotlarini rasm ustiga yozish
-    c.setFont("Arial", 16)
+    c.setFont("Arial", 20)  # ✅ Shrifi kattalashtirildi
     c.setFillColor(white)  # Matn rangi oq
 
-    # Joylashuv koordinatalari (rasmga mos ravishda)
-    c.drawString(300, 700, f"{user.name} {user.surname}")  # F.I.O
-    c.drawString(300, 640, user.address)  # Adres montaja
-    c.drawString(300, 580, user.phone)  # Kontaktnyy nomer
-    c.drawString(300, 520, user.email)  # E-mail
+    # 📍 Joylashuv koordinatalari
+    c.drawString(X_POSITION + 100, Y_POSITION + 700, f"{user.name} {user.surname}")  # F.I.O
+    c.drawString(X_POSITION + 100, Y_POSITION + 640, user.address)  # Adres montaja
+    c.drawString(X_POSITION + 100, Y_POSITION + 580, user.phone)  # Kontaktnyy nomer
+    c.drawString(X_POSITION + 100, Y_POSITION + 520, user.email)  # E-mail
 
     # ✅ PDF'ni saqlash
     c.showPage()
