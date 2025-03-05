@@ -17,6 +17,7 @@ pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 # 🖼️ Rasm va fon manzillari
 LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")  # Logotip
 BACKGROUND_PATH = os.path.join(settings.MEDIA_ROOT, "images/background.png")  # PNG fon rasmi
+TEMPLATE_IMAGE_PATH = os.path.join(settings.MEDIA_ROOT, "images/Group_90.png")  # Yangi rasm
 
 def generate_user_pdf(user):
     pdf_filename = "warranty_card.pdf"
@@ -30,6 +31,10 @@ def generate_user_pdf(user):
     if os.path.exists(BACKGROUND_PATH):
         c.drawImage(BACKGROUND_PATH, 0, 0, width=page_width, height=page_height, mask='auto')
 
+    # 🖼️ Yangi rasmni joylash
+    if os.path.exists(TEMPLATE_IMAGE_PATH):
+        c.drawImage(TEMPLATE_IMAGE_PATH, 50, 400, width=500, height=150, mask='auto')
+
     # 🖼️ Logotipni joylash (eng yuqori markazda)
     logo_width, logo_height = 120, 120  # Logotip o‘lchami
     logo_x = (page_width - logo_width) / 2  # Markazga moslash
@@ -41,21 +46,19 @@ def generate_user_pdf(user):
     # 📌 Sarlavha (Markazda, logotip ostida)
     c.setFont("Arial", 20)
     c.setFillColor(white)  # ✅ Matn rangi oq rangga o‘zgartirildi
-    c.drawCentredString(page_width / 2, logo_y - 30, f"ГАРАНТИЙНЫЙ ТАЛОН N {user.unique_code}")
+    c.drawCentredString(page_width / 2, logo_y - 30, f"ГАРАНТИЙНЫЙ ТАЛОН N_{user.unique_code}")
 
-    # 📌 Foydalanuvchi ma'lumotlari bir qatorda chiqadi
+    # 📌 Foydalanuvchi ma'lumotlarini rasm joylashuviga mos yozish
     c.setFont("Arial", 14)
+    y_position = 475  # Rasm ustidagi boshlang'ich balandlik
+    line_spacing = 30  # Har bir yozuv orasidagi masofa
 
-    y_position = 550  # Matnning boshlang‘ich balandligi
-    line_spacing = 40  # Har bir yozuv orasidagi masofa
-
-    # ✅ Yonma-yon formatda yozish (kalit so‘zlar chapda, qiymatlar o‘ngda)
-    labels = ["F.I.O:", "Manzil:", "Telefon:", "Email:"]
+    labels = ["F.I.O:", "Adres montaja:", "Kontaktnyy nomer:", "E-mail:"]
     values = [f"{user.name} {user.surname}", user.address, user.phone, user.email]
 
     for i in range(len(labels)):
-        c.drawString(100, y_position - (i * line_spacing), labels[i])
-        c.drawString(250, y_position - (i * line_spacing), values[i])  # Yonma-yon chiqarish
+        c.drawString(70, y_position - (i * line_spacing), labels[i])
+        c.drawString(220, y_position - (i * line_spacing), values[i])  # Yonma-yon chiqarish
 
     # ✅ PDF'ni saqlash
     c.showPage()
