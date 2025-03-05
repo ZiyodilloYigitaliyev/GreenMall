@@ -3,10 +3,10 @@ from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
-from reportlab.lib.pagesizes import A2  # ✅ A2 format kattaroq chiqadi
-from reportlab.lib.colors import white
+from reportlab.lib.pagesizes import A4  # 📄 Hujjat rasmi A4 formatda bo‘ladi
+from reportlab.lib.colors import black
 
-# 📂 PDF va shrift kataloglari
+# 📂 PDF fayllar uchun katalog
 GENERATED_PDF_DIR = os.path.join(settings.MEDIA_ROOT, "generated")
 os.makedirs(GENERATED_PDF_DIR, exist_ok=True)
 
@@ -14,37 +14,49 @@ os.makedirs(GENERATED_PDF_DIR, exist_ok=True)
 FONT_PATH = os.path.join(settings.MEDIA_ROOT, "fonts/arial.ttf")
 pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 
-# 🎮 Rasm va fon manzillari
-LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")  # Logotip
-BACKGROUND_PATH = os.path.join(settings.MEDIA_ROOT, "images/background.png")  # PNG fon rasmi
-IMAGE_PATH = os.path.join(settings.MEDIA_ROOT, "images/Group_90.png")  # Foydalanuvchi yuborgan rasm
+# 🎯 Logotip uchun fayl
+LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")
 
 def generate_user_pdf(user):
-    pdf_filename = "warranty_card.pdf"
+    pdf_filename = "document.pdf"
     output_pdf_path = os.path.join(GENERATED_PDF_DIR, pdf_filename)
 
-    # ✅ PDF yaratamiz (A2 formatda)
-    c = canvas.Canvas(output_pdf_path, pagesize=A2)
-    page_width, page_height = A2  # A2 sahifa o‘lchami
+    # 📄 PDF yaratamiz (A4 formatda)
+    c = canvas.Canvas(output_pdf_path, pagesize=A4)
+    page_width, page_height = A4  # Sahifa o‘lchami
 
-    # 🎮 RASMNI CHIROYLI JOYLASHTIRISH
-    IMAGE_WIDTH = 1200  # ✅ Rasm kengligi
-    IMAGE_HEIGHT = 800  # ✅ Rasm balandligi
-    X_POSITION = (page_width - IMAGE_WIDTH) / 2  # Markazlash
-    Y_POSITION = (page_height - IMAGE_HEIGHT) / 2
+    # 🏢 Logotip joylashuvi
+    if os.path.exists(LOGO_PATH):
+        LOGO_WIDTH = 150
+        LOGO_HEIGHT = 50
+        LOGO_X = (page_width - LOGO_WIDTH) / 2  # Markazda joylash
+        LOGO_Y = page_height - 100
+        c.drawImage(LOGO_PATH, LOGO_X, LOGO_Y, width=LOGO_WIDTH, height=LOGO_HEIGHT, mask='auto')
 
-    if os.path.exists(IMAGE_PATH):
-        c.drawImage(IMAGE_PATH, X_POSITION, Y_POSITION, width=IMAGE_WIDTH, height=IMAGE_HEIGHT, mask='auto')
+    # 📃 Hujjat sarlavhasi
+    c.setFont("Arial", 18)
+    c.setFillColor(black)
+    c.drawCentredString(page_width / 2, page_height - 150, "Kafolat Kartasi")  # **Sarlavha** (Warranty Card)
 
-    # 📈 Foydalanuvchi ma'lumotlarini rasm ustiga yozish
-    c.setFont("Arial", 20)  # ✅ Shrifi kattalashtirildi
-    c.setFillColor(white)  # Matn rangi oq
+    # 📝 Asosiy ma'lumotlar
+    c.setFont("Arial", 14)
 
-    # 📍 Joylashuv koordinatalari
-    c.drawString(X_POSITION + 100, Y_POSITION + 700, f"{user.name} {user.surname}")  # F.I.O
-    c.drawString(X_POSITION + 100, Y_POSITION + 640, user.address)  # Adres montaja
-    c.drawString(X_POSITION + 100, Y_POSITION + 580, user.phone)  # Kontaktnyy nomer
-    c.drawString(X_POSITION + 100, Y_POSITION + 520, user.email)  # E-mail
+    text_lines = [
+        f"F.I.O: {user.name} {user.surname}",
+        f"Adres: {user.address}",
+        f"Telefon: {user.phone}",
+        f"E-mail: {user.email}",
+        "Kafolat muddati: 12 oy",
+        "Izoh: Ushbu hujjat mahsulotning kafolatli ekanligini tasdiqlaydi.",
+        "Iltimos, kafolatni saqlang va kerak bo‘lsa biz bilan bog‘laning."
+    ]
+
+    x_text = 100
+    y_text = page_height - 200  # Logotipdan pastroq
+
+    for line in text_lines:
+        c.drawString(x_text, y_text, line)
+        y_text -= 30  # Har bir qatorni pastga suramiz
 
     # ✅ PDF'ni saqlash
     c.showPage()
