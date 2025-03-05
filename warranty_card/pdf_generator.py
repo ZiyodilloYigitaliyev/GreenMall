@@ -4,7 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.colors import black
+from reportlab.lib.colors import white
 
 # 📂 PDF va shrift kataloglari
 GENERATED_PDF_DIR = os.path.join(settings.MEDIA_ROOT, "generated")
@@ -15,7 +15,7 @@ FONT_PATH = os.path.join(settings.MEDIA_ROOT, "fonts/arial.ttf")
 pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 
 # 🖼️ Rasm va fon manzillari
-LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")  # Logotip joylashuvi
+LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")  # Logotip
 BACKGROUND_PATH = os.path.join(settings.MEDIA_ROOT, "images/background.png")  # PNG fon rasmi
 
 def generate_user_pdf(user):
@@ -40,27 +40,22 @@ def generate_user_pdf(user):
 
     # 📌 Sarlavha (Markazda, logotip ostida)
     c.setFont("Arial", 20)
-    c.setFillColor(black)
+    c.setFillColor(white)  # ✅ Matn rangi oq rangga o‘zgartirildi
     c.drawCentredString(page_width / 2, logo_y - 30, f"ГАРАНТИЙНЫЙ ТАЛОН N {user.unique_code}")
 
-    # 📌 Foydalanuvchi ma'lumotlari yonma-yon chiqariladi
+    # 📌 Foydalanuvchi ma'lumotlari bir qatorda chiqadi
     c.setFont("Arial", 14)
 
-    left_x = 100
-    right_x = 350
-    y_position = 620
+    y_position = 550  # Matnning boshlang‘ich balandligi
+    line_spacing = 40  # Har bir yozuv orasidagi masofa
 
-    c.drawString(left_x, y_position, "💡 F.I.O:")
-    c.drawString(right_x, y_position, f"{user.name} {user.surname}")
+    # ✅ Yonma-yon formatda yozish (kalit so‘zlar chapda, qiymatlar o‘ngda)
+    labels = ["F.I.O:", "Manzil:", "Telefon:", "Email:"]
+    values = [f"{user.name} {user.surname}", user.address, user.phone, user.email]
 
-    c.drawString(left_x, y_position - 30, "📍 Manzil:")
-    c.drawString(right_x, y_position - 30, user.address)
-
-    c.drawString(left_x, y_position - 60, "📞 Telefon:")
-    c.drawString(right_x, y_position - 60, user.phone)
-
-    c.drawString(left_x, y_position - 90, "✉️ Email:")
-    c.drawString(right_x, y_position - 90, user.email)
+    for i in range(len(labels)):
+        c.drawString(100, y_position - (i * line_spacing), labels[i])
+        c.drawString(250, y_position - (i * line_spacing), values[i])  # Yonma-yon chiqarish
 
     # ✅ PDF'ni saqlash
     c.showPage()
