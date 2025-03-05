@@ -1,4 +1,5 @@
 import os
+import uuid
 from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
@@ -18,7 +19,8 @@ pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")
 
 def generate_user_pdf(user):
-    pdf_filename = "document.pdf"
+    unique_code = str(uuid.uuid4())[:8]  # 📌 8 ta belgili unikal kod yaratamiz
+    pdf_filename = f"warranty_card_{unique_code}.pdf"
     output_pdf_path = os.path.join(GENERATED_PDF_DIR, pdf_filename)
 
     # 📄 PDF yaratamiz (A4 formatda)
@@ -36,27 +38,26 @@ def generate_user_pdf(user):
     # 📃 Hujjat sarlavhasi
     c.setFont("Arial", 18)
     c.setFillColor(black)
-    c.drawCentredString(page_width / 2, page_height - 150, "Kafolat Kartasi")  # **Sarlavha** (Warranty Card)
+    c.drawCentredString(page_width / 2, page_height - 150, f"Kafolat Kartasi N_{unique_code}")  # **Sarlavha** (Warranty Card)
 
-    # 📝 Asosiy ma'lumotlar
+    # 📝 Ma'lumotlar bitta qatorda bo‘lishi kerak
     c.setFont("Arial", 14)
 
-    text_lines = [
-        f"F.I.O: {user.name} {user.surname}",
-        f"Adres: {user.address}",
-        f"Telefon: {user.phone}",
-        f"E-mail: {user.email}",
-        "Kafolat muddati: 12 oy",
-        "Izoh: Ushbu hujjat mahsulotning kafolatli ekanligini tasdiqlaydi.",
-        "Iltimos, kafolatni saqlang va kerak bo‘lsa biz bilan bog‘laning."
-    ]
-
-    x_text = 100
+    user_data = f"F.I.O: {user.name} {user.surname}  ||  Adres: {user.address}  ||  Telefon: {user.phone}  ||  E-mail: {user.email}"
+    
+    x_text = 50
     y_text = page_height - 200  # Logotipdan pastroq
+    max_width = page_width - 100  # Matn sahifa chegaralariga chiqmasligi uchun
 
-    for line in text_lines:
-        c.drawString(x_text, y_text, line)
-        y_text -= 30  # Har bir qatorni pastga suramiz
+    # 📌 Agar matn uzun bo‘lsa, avtomatik ravishda ikkita qatorga ajratamiz
+    if c.stringWidth(user_data, "Arial", 14) > max_width:
+        parts = user_data.split("  ||  ")
+        line1 = "  ||  ".join(parts[:2])  # Birinchi yarim qismi
+        line2 = "  ||  ".join(parts[2:])  # Ikkinchi yarim qismi
+        c.drawString(x_text, y_text, line1)
+        c.drawString(x_text, y_text - 30, line2)
+    else:
+        c.drawString(x_text, y_text, user_data)
 
     # ✅ PDF'ni saqlash
     c.showPage()
