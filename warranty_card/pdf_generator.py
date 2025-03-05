@@ -17,7 +17,7 @@ pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 # 🎮 Rasm va fon manzillari
 LOGO_PATH = os.path.join(settings.MEDIA_ROOT, "images/logo.png")  # Logotip
 BACKGROUND_PATH = os.path.join(settings.MEDIA_ROOT, "images/background.png")  # PNG fon rasmi
-IMAGE_PATH = os.path.join(settings.MEDIA_ROOT, "images/Group_91.png")  # Foydalanuvchi yuborgan rasm
+IMAGE_PATH = os.path.join(settings.MEDIA_ROOT, "images/Group_90.png")  # Foydalanuvchi yuborgan rasm
 
 def generate_user_pdf(user):
     pdf_filename = "warranty_card.pdf"
