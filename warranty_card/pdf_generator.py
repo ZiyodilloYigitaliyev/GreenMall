@@ -19,11 +19,12 @@ s3_client = boto3.client(
     region_name=settings.AWS_REGION_NAME,
 )
 
+AWS_BASE_URL = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}"
 
 FONT_PATH = os.path.join(settings.MEDIA_ROOT, "fonts/arial.ttf")
 pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 
-IMAGE_URL = f"{settings.AWS_S3_CUSTOM_DOMAIN}/images/Frame_27.jpg"
+IMAGE_URL = f"{AWS_BASE_URL}/images/Frame_27.jpg"
 
 # 📌 1️⃣ **AWS S3'dan rasmni yuklash**
 def download_image_from_s3(image_url):
