@@ -70,13 +70,15 @@ def generate_user_pdf(user):
     
     # ✅ **Matn koordinatalari**
     text_data = {
-        f"{user.name} {user.surname}": (210, 1480),
+        user.surname: (210, 1480),
+        user.name: (1390, 1480),
         user.address: (210, 1835),
         user.phone: (1390, 1850),
-        today_date: (1450, 1100),  # ✅ Sana avtomatik
-        "10000": (1840, 1100),
+        today_date: (1450, 1100), 
+        "100": (1840, 1100),
         unique_code: (1550, 830),
     }
+
 
     # 🔴 **Qizil rangda chiqariladigan matnlar**
     special_text = {unique_code}
@@ -102,4 +104,4 @@ def generate_user_pdf(user):
     # 🌐 5️⃣ **S3'dagi PDF fayl URL'si**
     pdf_url = f"{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}"
 
-    return pdf_url  # ✅ **Foydalanuvchiga PDF URL qaytariladi**
+    return pdf_url
