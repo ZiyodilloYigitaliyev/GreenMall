@@ -49,7 +49,7 @@ def add_text_to_image(image, text_data, special_text=None):
     special_text = special_text or {}
 
     for text, (x, y) in text_data.items():
-        color = "#0C4840" if text in special_text else "black"  # ✅ **Oq emas, qora rang ishlatiladi**
+        color = "#0C4840" if text in special_text else "white"  # ✅ **Oq emas, qora rang ishlatiladi**
         draw.text((x, y), text, fill=color, font=font)
 
     return image
