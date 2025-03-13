@@ -15,11 +15,9 @@ class RegisterView(CreateAPIView):
     def perform_create(self, serializer):
         user = serializer.save()
 
-        # ✅ PDF yaratish
         pdf_filename = generate_user_pdf(user)
 
-        # ✅ PDF mavjudligini tekshirish
-        pdf_url = f"{settings.MEDIA_URL}{pdf_filename}"
+        pdf_url = generate_user_pdf(user)
         return Response(
             {
                 "message": "User created successfully",
