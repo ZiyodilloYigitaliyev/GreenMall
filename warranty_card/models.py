@@ -9,9 +9,5 @@ class User(AbstractUser):
     address = models.TextField()
     unique_code = models.IntegerField(unique=True, blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        if not self.username:
-            self.username = self.email  # ✅ `username`ni email bilan to‘ldirish
-        if not self.unique_code:
-            self.unique_code = random.randint(100000, 999999)  # ✅ 6 xonali kod
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.name} {self.surname}"
