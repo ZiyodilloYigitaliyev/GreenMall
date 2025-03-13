@@ -3,12 +3,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.conf import settings
 from rest_framework import status
-from .models import CustomUser
+from .models import User
 from .serializers import UserSerializer
 from .pdf_generator import generate_user_pdf
 
 class RegisterView(CreateAPIView):
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
