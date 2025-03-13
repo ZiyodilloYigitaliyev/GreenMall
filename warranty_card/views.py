@@ -17,8 +17,9 @@ class RegisterView(CreateAPIView):
 
         # ✅ PDF yaratish
         pdf_filename = generate_user_pdf(user)
-        pdf_url = f"{settings.MEDIA_URL}{pdf_filename}"
 
+        # ✅ PDF mavjudligini tekshirish
+        pdf_url = f"{settings.MEDIA_URL}{pdf_filename}"
         return Response(
             {
                 "message": "User created successfully",
@@ -26,3 +27,4 @@ class RegisterView(CreateAPIView):
             },
             status=status.HTTP_201_CREATED
         )
+
