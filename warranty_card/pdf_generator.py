@@ -12,6 +12,7 @@ from reportlab.lib.colors import black
 from PIL import Image, ImageDraw, ImageFont
 import requests
 
+# ✅ AWS S3 sozlamalari
 s3_client = boto3.client(
     "s3",
     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -19,11 +20,7 @@ s3_client = boto3.client(
     region_name=settings.AWS_REGION_NAME,
 )
 
-
-
-
 AWS_BASE_URL = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}"
-
 FONT_PATH = os.path.join(settings.MEDIA_ROOT, "fonts/arial.ttf")
 pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
 
@@ -35,21 +32,21 @@ def download_image_from_s3(image_url):
     if response.status_code == 200:
         return Image.open(BytesIO(response.content)).convert("RGB")  # ✅ JPG formatida o‘qish
     else:
-        raise Exception(f"Rasm yuklab olinmadi: {image_url}")
+        raise Exception(f"❌ Rasm yuklab olinmadi: {image_url}")
 
 # 📌 2️⃣ **Matnni rasmga joylashtirish**
 def add_text_to_image(image, text_data, special_text=None):
     draw = ImageDraw.Draw(image)
-    
+
     try:
-        font = ImageFont.truetype(FONT_PATH, 50)  # **Shrift 50px**
+        font = ImageFont.truetype(FONT_PATH, 50)  # ✅ Shrift 50px
     except IOError:
         font = ImageFont.load_default()
 
     special_text = special_text or {}
 
     for text, (x, y) in text_data.items():
-        color = "#0C4840" if text in special_text else "white"  # ✅ **Oq emas, qora rang ishlatiladi**
+        color = "#0C4840" if text in special_text else "white"  # ✅ Matn ranglari
         draw.text((x, y), text, fill=color, font=font)
 
     return image
@@ -57,7 +54,7 @@ def add_text_to_image(image, text_data, special_text=None):
 # 📌 3️⃣ **Rasmni PDF formatiga o‘tkazish**
 def convert_image_to_pdf(image):
     pdf_bytes = BytesIO()
-    image.save(pdf_bytes, format="PDF")  # ✅ **Pillow yordamida JPG dan to‘g‘ri PDF yaratish**
+    image.save(pdf_bytes, format="PDF")  # ✅ Pillow yordamida JPG dan to‘g‘ri PDF yaratish
     return pdf_bytes.getvalue()
 
 # 📌 4️⃣ **Foydalanuvchi uchun PDF yaratish va S3'ga yuklash**
@@ -65,10 +62,10 @@ def generate_user_pdf(user):
     unique_code = str(uuid.uuid4())[:8]
     pdf_filename = f"warranty_card_{unique_code}.pdf"
 
-    # 📆 Bugungi sana avtomatik
+    # 📆 **Bugungi sana avtomatik**
     today_date = datetime.datetime.now().strftime("%d.%m.%Y")
 
-    # ✅ Matn koordinatalari
+    # ✅ **Matn koordinatalari**
     text_data = {
         user.surname: (210, 1480),
         user.name: (1390, 1480),
@@ -79,20 +76,20 @@ def generate_user_pdf(user):
         unique_code: (1550, 830),
     }
 
-    # 🔴 Qizil rangda chiqariladigan matnlar
+    # 🔴 **Qizil rangda chiqariladigan matnlar**
     special_text = {unique_code}
 
     try:
-        # 📍 1️⃣ AWS S3'dan rasmni yuklash (JPG)
+        # 📍 1️⃣ **AWS S3'dan rasmni yuklash (JPG)**
         image = download_image_from_s3(IMAGE_URL)
 
-        # 📍 2️⃣ Rasmga foydalanuvchi ma’lumotlarini joylashtirish
+        # 📍 2️⃣ **Rasmga foydalanuvchi ma’lumotlarini joylashtirish**
         filled_image = add_text_to_image(image, text_data, special_text)
 
-        # 📍 3️⃣ JPG'ni PDF formatiga o‘tkazish
+        # 📍 3️⃣ **JPG'ni PDF formatiga o‘tkazish**
         pdf_content = convert_image_to_pdf(filled_image)
 
-        # 📤 4️⃣ AWS S3'ga yuklash
+        # 📤 4️⃣ **AWS S3'ga yuklash**
         s3_key = f"generated/{pdf_filename}"
         s3_client.put_object(
             Bucket=settings.AWS_STORAGE_BUCKET_NAME,
@@ -101,13 +98,10 @@ def generate_user_pdf(user):
             ContentType="application/pdf",
         )
 
-        # 🌐 5️⃣ S3'dagi PDF fayl URL'si
-        pdf_url = f"{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}"
-        
-        print(f"✅ PDF saqlandi: {pdf_url}")  # 🚀 LOG qo'shdik
+        # 🌐 5️⃣ **S3'dagi PDF fayl URL'si**
+        pdf_url = f"{AWS_BASE_URL}/{s3_key}"
 
-        return pdf_url
-    
+        return pdf_url  # ✅ Endi `print` emas, to‘g‘ridan-to‘g‘ri `pdf_url` qaytadi
+
     except Exception as e:
-        print(f"❌ Xatolik yuz berdi: {e}")  # 🚀 LOG qo'shdik
-        return None
+        return None  # ❌ Xatolik bo‘lsa `None` qaytariladi

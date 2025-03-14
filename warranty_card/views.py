@@ -11,18 +11,29 @@ class RegisterView(CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # ✅ PDF yaratish
+        # ✅ PDF yaratish va URL olish
         pdf_url = generate_user_pdf(user)
-        response_data = {
-            "message": "User created successfully",
-            "name": user.name,
-            "surname": user.surname,
-            "phone": user.phone,
-            "address": user.address,
-            "pdf_url": pdf_url,
-        }
 
-        return Response(response_data, status=status.HTTP_201_CREATED)
+        # ✅ Agar PDF yaratishda muammo bo‘lsa, xabar beramiz
+        if not pdf_url:
+            return Response(
+                {"error": "PDF yaratishda xatolik yuz berdi"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response(
+            {
+                "message": "User created successfully",
+                "name": user.name,
+                "surname": user.surname,
+                "phone": user.phone,
+                "address": user.address,
+                "pdf_url": pdf_url,  # ✅ Endi `response` ichida ko‘rinadi
+            },
+            status=status.HTTP_201_CREATED
+        )
