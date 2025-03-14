@@ -107,6 +107,7 @@ def generate_user_pdf(user):
         print(f"✅ PDF saqlandi: {pdf_url}")  # 🚀 LOG qo'shdik
 
         return pdf_url
+    
     except Exception as e:
         print(f"❌ Xatolik yuz berdi: {e}")  # 🚀 LOG qo'shdik
         return None

@@ -1,7 +1,6 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.conf import settings
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
@@ -15,19 +14,15 @@ class RegisterView(CreateAPIView):
     def perform_create(self, serializer):
         user = serializer.save()
 
+        # ✅ PDF yaratish
         pdf_url = generate_user_pdf(user)
+        response_data = {
+            "message": "User created successfully",
+            "name": user.name,
+            "surname": user.surname,
+            "phone": user.phone,
+            "address": user.address,
+            "pdf_url": pdf_url,
+        }
 
-        if not pdf_url:
-            return Response(
-                {"error": "PDF faylni yaratishda muammo yuz berdi!"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-        return Response(
-            {
-                "message": "User created successfully",
-                "pdf_url": pdf_url,
-            },
-            status=status.HTTP_201_CREATED
-        )
-
+        return Response(response_data, status=status.HTTP_201_CREATED)
