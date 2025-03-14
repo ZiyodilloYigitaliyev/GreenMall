@@ -15,14 +15,12 @@ class RegisterView(CreateAPIView):
     def perform_create(self, serializer):
         user = serializer.save()
 
-        pdf_filename = generate_user_pdf(user)
-
         pdf_url = generate_user_pdf(user)
+
         return Response(
             {
                 "message": "User created successfully",
-                "pdf_url": pdf_url,
+                "pdf_url": pdf_url, 
             },
             status=status.HTTP_201_CREATED
         )
-
