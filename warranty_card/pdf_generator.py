@@ -65,10 +65,10 @@ def generate_user_pdf(user):
     unique_code = str(uuid.uuid4())[:8]
     pdf_filename = f"warranty_card_{unique_code}.pdf"
 
-    # 📆 **Bugungi sana avtomatik**
+    # 📆 Bugungi sana avtomatik
     today_date = datetime.datetime.now().strftime("%d.%m.%Y")
-    
-    # ✅ **Matn koordinatalari**
+
+    # ✅ Matn koordinatalari
     text_data = {
         user.surname: (210, 1480),
         user.name: (1390, 1480),
@@ -79,29 +79,34 @@ def generate_user_pdf(user):
         unique_code: (1550, 830),
     }
 
-
-    # 🔴 **Qizil rangda chiqariladigan matnlar**
+    # 🔴 Qizil rangda chiqariladigan matnlar
     special_text = {unique_code}
 
-    # 📍 1️⃣ **AWS S3'dan rasmni yuklash (JPG)**
-    image = download_image_from_s3(IMAGE_URL)
+    try:
+        # 📍 1️⃣ AWS S3'dan rasmni yuklash (JPG)
+        image = download_image_from_s3(IMAGE_URL)
 
-    # 📍 2️⃣ **Rasmga foydalanuvchi ma’lumotlarini joylashtirish**
-    filled_image = add_text_to_image(image, text_data, special_text)
+        # 📍 2️⃣ Rasmga foydalanuvchi ma’lumotlarini joylashtirish
+        filled_image = add_text_to_image(image, text_data, special_text)
 
-    # 📍 3️⃣ **JPG'ni PDF formatiga o‘tkazish**
-    pdf_content = convert_image_to_pdf(filled_image)
+        # 📍 3️⃣ JPG'ni PDF formatiga o‘tkazish
+        pdf_content = convert_image_to_pdf(filled_image)
 
-    # 📤 4️⃣ **AWS S3'ga yuklash**
-    s3_key = f"generated/{pdf_filename}"
-    s3_client.put_object(
-        Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-        Key=s3_key,
-        Body=pdf_content,
-        ContentType="application/pdf",
-    )
+        # 📤 4️⃣ AWS S3'ga yuklash
+        s3_key = f"generated/{pdf_filename}"
+        s3_client.put_object(
+            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            Key=s3_key,
+            Body=pdf_content,
+            ContentType="application/pdf",
+        )
 
-    # 🌐 5️⃣ **S3'dagi PDF fayl URL'si**
-    pdf_url = f"{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}"
+        # 🌐 5️⃣ S3'dagi PDF fayl URL'si
+        pdf_url = f"{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}"
+        
+        print(f"✅ PDF saqlandi: {pdf_url}")  # 🚀 LOG qo'shdik
 
-    return pdf_url
+        return pdf_url
+    except Exception as e:
+        print(f"❌ Xatolik yuz berdi: {e}")  # 🚀 LOG qo'shdik
+        return None

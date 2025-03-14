@@ -17,10 +17,17 @@ class RegisterView(CreateAPIView):
 
         pdf_url = generate_user_pdf(user)
 
+        if not pdf_url:
+            return Response(
+                {"error": "PDF faylni yaratishda muammo yuz berdi!"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
         return Response(
             {
                 "message": "User created successfully",
-                "pdf_url": pdf_url, 
+                "pdf_url": pdf_url,
             },
             status=status.HTTP_201_CREATED
         )
+
