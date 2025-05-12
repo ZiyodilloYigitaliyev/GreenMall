@@ -7,14 +7,14 @@ from urllib.parse import urlparse
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = '84ufij489fj4f9u50fkw09qivk409ufb.yey3egdg3f3'
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+ALLOWED_HOSTS = ['3fc8-213-230-76-42.ngrok-free.app']
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -71,10 +71,15 @@ SIMPLE_JWT = {
 }
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
+    "https://3fc8-213-230-76-42.ngrok-free.app",
     "http://localhost:8000",
     "http://localhost:5173",
     
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://3fc8-213-230-76-42.ngrok-free.app",
+]
+
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -122,17 +127,24 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-AUTH_USER_MODEL = "warranty_card.User"
+AUTH_USER_MODEL = "warranty_card.Admin"
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('Database'),
+#         'USER': os.getenv('User'),
+#         'PASSWORD': os.getenv('Password'),
+#         'HOST': os.getenv('Host'),
+#         'PORT': os.getenv('Port'),
+#     }
+# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('Database'),
-        'USER': os.getenv('User'),
-        'PASSWORD': os.getenv('Password'),
-        'HOST': os.getenv('Host'),
-        'PORT': os.getenv('Port'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
